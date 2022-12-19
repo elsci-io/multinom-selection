@@ -13,6 +13,21 @@ For instance $H_2O$ consists of 2 elements: $H$ and $O$. Each of them has a numb
 
 We don't really want to go over all the combinations as most of them are too rare. In the example above only the primary isotopologue is interesting, the rest can be ignored. But in larger molecules we may be interested in a couple of dozens of isotopologues. And we need a way to list the ones that we'll be interested in. The naive approach will result in a quadratic algorithm which is too slow for large molecules.
 
+## Multinonmial math
+
+In mathematical terms all possible combinations and their probabilities can be generated using a multinomial:
+
+$$
+\text{Distribution of isotopologues}=(a_{1}^{\alpha_1}+a_{2}^{\alpha_2}+...+a_{n}^{\alpha_n})^A + (b_{1}^{\beta_1}+b_{2}^{\beta_2}+...+b_{n}^{\beta_n})^B
+$$
+
+where
+* $a1$, $a2$ are probabilities of 1st and 2nd isotope of first element (basically $p(^1H)$, $p(^2H)$ in our example at the top) and $b_1$, $b_2$ are isotopes of 2nd element (it's $p(^{16}O)$ and $p(^{18}O)$ probabilities).
+* $\alpha_1$, $\alpha_2$ are molecular mass of that isotope
+* $A$ and $B$ is the number of repeats of these elements (2 and 1 in our example).
+
+Try it for $H_2O$ and you'll see that the probabilities will turn out just right as they are multiplied, while the $\alpha_n$ powers will be added - which represents the sum of masses of isotopes in a molecule.
+
 # Inputs & Outputs
 
 ## Alphabets
@@ -50,8 +65,6 @@ WordSpec spec = new WordSpec(Map.of(
 ));
 Iterator<Word> words = new WordGenerator(alphabets).generate(spec);
 ```
-
-In mathematical terms all possible combinations and their probabilities can be generated using a multinomial $(a_1+a_2+...+a_n)^A + (b_1+b_2+...+b_n)^B$ where $a1$, $a2$ are probabilities of 1st and 2nd isotope of first element (basically $p(^1H)$, $p(^2H)$ in our example at the top) and $b_1$, $b_2$ are isotopes of 2nd element (it's $p(^{16}O)$ and $p(^{18}O)$ probabilities). And $A$ and $B$ is the number of repeats of these elements (2 and 1 in our example).
 
 ## Isotopologues
 
