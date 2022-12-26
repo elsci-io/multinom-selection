@@ -33,7 +33,7 @@ public class NaiveWordGeneratorTest {
         assertFalse(it.hasNext());
     }
     @Test
-    public void wordCreatedOutOf1SymbolsOf1Alphabet_has1WordOf2Symbols() {
+    public void wordCreatedOutOf2SymbolsOf1Alphabet_hasProbability1() {
         Alphabet a = new Alphabet(1);
         Alphabets as = new Alphabets(new Alphabet[]{a});
 
@@ -45,4 +45,21 @@ public class NaiveWordGeneratorTest {
         assertFalse(it.hasNext());
     }
 
+    @Test
+    public void wordCreatedOutOf1SymbolsOf2Alphabet_has2Words() {
+        Alphabet a = new Alphabet(.75, .25);
+        Alphabets as = new Alphabets(new Alphabet[]{a});
+
+        NaiveWordGenerator generator = new NaiveWordGenerator(as);
+        Iterator<Word> it = generator.generate(new WordSpec(Map.of(a, 1)));
+
+        Word next = it.next();
+        Word expected = new Word(new Symbol[]{new Symbol(a, 0)}, .75);
+        assertEquals(expected, next);
+
+        next = it.next();
+        expected = new Word(new Symbol[]{new Symbol(a, 1)}, .25);
+        assertEquals(expected, next);
+        assertFalse(it.hasNext());
+    }
 }

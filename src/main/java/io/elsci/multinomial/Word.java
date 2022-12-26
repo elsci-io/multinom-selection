@@ -23,4 +23,7 @@ public class Word {
         result = 31 * result + Arrays.hashCode(symbols);
         return result;
     }
+    @Override public String toString() {
+        return "{" + probability +": " +Arrays.toString(symbols)+"}";
+    }
 }

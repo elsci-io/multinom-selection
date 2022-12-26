@@ -24,4 +24,7 @@ public class Symbol {
     @Override public int hashCode() {
         return Objects.hash(alphabet, letterIndex);
     }
+    @Override public String toString() {
+        return "1@" + alphabet.probabilities[letterIndex];
+    }
 }
