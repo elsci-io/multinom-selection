@@ -62,4 +62,23 @@ public class NaiveWordGeneratorTest {
         assertEquals(expected, next);
         assertFalse(it.hasNext());
     }
+
+    @Test
+    public void alphabets2x1_generate2words_length2() {
+        Alphabet a = new Alphabet(.75, .25);
+        Alphabet a1 = new Alphabet(1);
+        Alphabets as = new Alphabets(new Alphabet[]{a, a1});
+
+        NaiveWordGenerator generator = new NaiveWordGenerator(as);
+        Iterator<Word> it = generator.generate(new WordSpec(Map.of(a, 1, a1, 1)));
+
+        Word next = it.next();
+        Word expected = new Word(new Symbol[]{new Symbol(a, 0), new Symbol(a1, 0)}, .75);
+        assertEquals(expected, next);
+
+        next = it.next();
+        expected = new Word(new Symbol[]{new Symbol(a, 1), new Symbol(a1, 0)}, .25);
+        assertEquals(expected, next);
+        assertFalse(it.hasNext());
+    }
 }
