@@ -2,10 +2,10 @@ package io.elsci.multinomial;
 
 
 public class Alphabets {
-    final double[][] probabilities;
+    final Alphabet[] alphabets;
 
-    public Alphabets(Alphabets[] alphabets) {
-        this.probabilities = null;
+    public Alphabets(Alphabet[] alphabets) {
+        this.alphabets = alphabets;
     }
 
 

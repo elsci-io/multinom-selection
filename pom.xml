@@ -27,7 +27,7 @@
                     <configuration>
                         <!-- As opposed to source/target versions this one checks not only syntax,
                         but also that classes/methods are available in the target version-->
-                        <release>7</release>
+                        <release>9</release>
                     </configuration>
                 </plugin>
             </plugins>
