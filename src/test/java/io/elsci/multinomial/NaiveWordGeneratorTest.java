@@ -6,29 +6,25 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static io.elsci.multinomial.AssertUtils.assertWordsEqual;
 import static org.junit.Assert.*;
 
 public class NaiveWordGeneratorTest {
     @Test
     public void thereIsOnlyOneEmptyWord_andItsProbabilityIs1() {
         Alphabet a = new Alphabet("A", 1);
-
-        NaiveWordGenerator generator = new NaiveWordGenerator();
-        Iterator<Word> it = generator.generate(new WordSpec(map(a, 0)));
+        Iterator<Word> it = generate(map(a, 0));
         Word next = it.next();
         assertEquals(1, next.probability, 0);
-        assertEquals(0, next.symbols.length);
+        assertEquals(0, next.symbols.getWordLength());
         assertFalse(it.hasNext());
     }
     @Test
     public void wordCreatedOutOf1SymbolOf1Alphabet_hasProbability1() {
         Alphabet a = new Alphabet("A", 1);
-        NaiveWordGenerator generator = new NaiveWordGenerator();
-
-        Iterator<Word> it = generator.generate(new WordSpec(map(a, 1)));
+        Iterator<Word> it = generate(map(a, 1));
         Word next = it.next();
-        assertEquals(1, next.probability, 0);
-        assertArrayEquals(a.getSymbols(0), next.symbols);
+        assertWordsEqual(new Word(a.getSymbols(0), 1), next);
         assertFalse(it.hasNext());
     }
     @Test
@@ -39,24 +35,22 @@ public class NaiveWordGeneratorTest {
         Iterator<Word> it = generator.generate(new WordSpec(map(a, 2)));
         Word next = it.next();
         Word expected = new Word(a.getSymbols(0, 0), 1);
-        assertEquals(expected, next);
+        assertWordsEqual(expected, next);
         assertFalse(it.hasNext());
     }
 
     @Test
     public void wordCreatedOutOf1SymbolsOf2Alphabet_has2Words() {
         Alphabet a = new Alphabet("A", .75, .25);
-        NaiveWordGenerator generator = new NaiveWordGenerator();
-
-        Iterator<Word> it = generator.generate(new WordSpec(map(a, 1)));
+        Iterator<Word> it = generate(map(a, 1));
 
         Word next = it.next();
         Word expected = new Word(a.getSymbols(0), .75);
-        assertEquals(expected, next);
+        assertWordsEqual(expected, next);
 
         next = it.next();
         expected = new Word(new Symbol[]{new Symbol(a, 1)}, .25);
-        assertEquals(expected, next);
+        assertWordsEqual(expected, next);
         assertFalse(it.hasNext());
     }
 
@@ -65,17 +59,33 @@ public class NaiveWordGeneratorTest {
         Alphabet a0 = new Alphabet("a", .75, .25);
         Alphabet a1 = new Alphabet("A", 1);
 
-        NaiveWordGenerator generator = new NaiveWordGenerator();
-        Iterator<Word> it = generator.generate(new WordSpec(map(a0, 1, a1, 1)));
+        Iterator<Word> it = generate(map(a0, 1, a1, 1));
 
         Word next = it.next();
         Word expected = new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(0)}, .75);
-        assertEquals(expected, next);
+        assertWordsEqual(expected, next);
 
         next = it.next();
         expected = new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(0)}, .25);
-        assertEquals(expected, next);
+        assertWordsEqual(expected, next);
         assertFalse(it.hasNext());
+    }
+
+    @Test
+    public void wordsAreSortedByProbability_desc() {
+        // {{.6, .4}}
+        // 2 letters: (.6 * .6), (2*.4*.6) - most probable, (.4 * .4) - least probable
+        Alphabet a = new Alphabet("a", .6, .4);
+        Iterator<Word> words = generate(map(a, 2));
+
+        assertWordsEqual(new Word(a.getSymbols(0, 1), .48), words.next());
+        assertWordsEqual(new Word(a.getSymbols(0, 0), .36), words.next());
+        assertWordsEqual(new Word(a.getSymbols(1, 1), .16), words.next());
+        assertFalse(words.hasNext());
+    }
+
+    private static Iterator<Word> generate(Map<Alphabet, Integer> wordSpec) {
+        return new NaiveWordGenerator().generate(new WordSpec(wordSpec));
     }
 
     private static <K, V> Map<K, V> map(K k, V v) {

@@ -3,40 +3,43 @@ package io.elsci.multinomial;
 import com.google.common.collect.Lists;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class NaiveWordGenerator implements WordGenerator {
 
     public Iterator<Word> generate(WordSpec spec) {
-        ArrayList<Word> result = new ArrayList<>();
-        List<List<Integer>> blah = new ArrayList<>();
-        ArrayList<Alphabet> as = new ArrayList<>();
-        for (Map.Entry<Alphabet, Integer> specEntry : spec.numberOfSymbols.entrySet()) {
+        List<List<Integer>> symbolChoices = new ArrayList<>();
+        List<Alphabet> as = new ArrayList<>();
+        for (Entry<Alphabet, Integer> specEntry : spec.numberOfSymbols.entrySet()) {
             Alphabet a = specEntry.getKey();
             int syllableLength = specEntry.getValue();
             for (int i = 0; i < syllableLength; i++) {
                 as.add(a);
-                blah.add(seq(a.probabilities.length));
+                symbolChoices.add(seq(a.probabilities.length));
             }
 
         }
 
-        // We need a word consisting of 2 letters: {{a, b}, {C}},
-        // so we end up with: aC , bC
-        //
-
-        List<List<Integer>> words = Lists.cartesianProduct(blah);
+        Map<SymbolSet, Double> combinationProb = new HashMap<>();
+        List<List<Integer>> words = Lists.cartesianProduct(symbolChoices);
         for (List<Integer> wordSymbolIndices : words) {
-            Symbol[] symbols = new Symbol[wordSymbolIndices.size()];
+            SymbolSet symbols = new SymbolSet();
             double wordProb = 1;
             for (int i = 0; i < wordSymbolIndices.size(); i++) {
                 Alphabet a = as.get(i);
                 int symbolFromAlphabet = wordSymbolIndices.get(i);
-                symbols[i] = new Symbol(a, symbolFromAlphabet);
+                symbols.add(a.getSymbol(symbolFromAlphabet));
                 wordProb *= a.probabilities[symbolFromAlphabet];
             }
-            result.add(new Word(symbols, wordProb));
+            Double existingProb = combinationProb.getOrDefault(symbols, 0D);
+            combinationProb.put(symbols, existingProb + wordProb);
         }
 
+        List<Word> result = new ArrayList<>(combinationProb.size());
+        for (Entry<SymbolSet, Double> set : combinationProb.entrySet())
+            result.add(new Word(set.getKey(), set.getValue()));
+
+        result.sort(Word.BY_PROBABILITY_DESC);
         return result.iterator();
     }
 
