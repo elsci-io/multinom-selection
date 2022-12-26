@@ -24,6 +24,6 @@ public class Word {
         return result;
     }
     @Override public String toString() {
-        return "{" + probability +": " +Arrays.toString(symbols)+"}";
+        return "{prob=" + probability +": " +Arrays.toString(symbols)+"}";
     }
 }

@@ -25,6 +25,6 @@ public class Symbol {
         return Objects.hash(alphabet, letterIndex);
     }
     @Override public String toString() {
-        return "1@" + alphabet.probabilities[letterIndex];
+        return alphabet.name + "" + letterIndex;
     }
 }

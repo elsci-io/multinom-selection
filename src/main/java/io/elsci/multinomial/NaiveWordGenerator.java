@@ -5,11 +5,6 @@ import com.google.common.collect.Lists;
 import java.util.*;
 
 public class NaiveWordGenerator implements WordGenerator {
-    private final Alphabets alphabets;
-
-    public NaiveWordGenerator(Alphabets alphabets) {
-        this.alphabets = alphabets;
-    }
 
     public Iterator<Word> generate(WordSpec spec) {
         ArrayList<Word> result = new ArrayList<>();
