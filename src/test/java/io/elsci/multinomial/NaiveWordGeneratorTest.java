@@ -72,6 +72,20 @@ public class NaiveWordGeneratorTest {
     }
 
     @Test
+    public void alphabets2x2_generate4words_length2() {
+        Alphabet a0 = new Alphabet("a", .75, .25);
+        Alphabet a1 = new Alphabet("A", .2, .8);
+
+        Iterator<Word> it = generate(map(a0, 1, a1, 1));
+
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(1)}, .6), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(1)}, .2), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(0)}, .15), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(0)}, .05), it.next());
+        assertFalse(it.hasNext());
+    }
+
+    @Test
     public void wordsAreSortedByProbability_desc() {
         // {{.6, .4}}
         // 2 letters: (.6 * .6), (2*.4*.6) - most probable, (.4 * .4) - least probable
