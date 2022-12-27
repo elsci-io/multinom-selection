@@ -28,7 +28,7 @@ public class NaiveWordGenerator implements WordGenerator {
             for (int i = 0; i < wordSymbolIndices.size(); i++) {
                 Alphabet a = as.get(i);
                 int symbolFromAlphabet = wordSymbolIndices.get(i);
-                symbols.add(a.getSymbol(symbolFromAlphabet));
+                symbols.increment(a.getSymbol(symbolFromAlphabet));
                 wordProb *= a.probabilities[symbolFromAlphabet];
             }
             Double existingProb = combinationProb.getOrDefault(symbols, 0D);
