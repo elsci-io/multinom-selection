@@ -103,7 +103,7 @@ public class NaiveWordGeneratorTest {
         Alphabet a = new Alphabet("a", .2, .8);
         Iterator<Word> it = generate(map(a, 10));
 
-        assertWordsEqual(new Word(new SymbolSet(map(a.getSymbol(0), 2, a.getSymbol(1), 8)),  0.3019899), it.next());
+        assertWordsEqual(new Word(new MapBasedSymbolSet(map(a.getSymbol(0), 2, a.getSymbol(1), 8)),  0.3019899), it.next());
 
     }
 

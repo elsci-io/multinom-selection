@@ -1,6 +1,5 @@
 package io.elsci.multinomial;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -10,7 +9,7 @@ public class Word {
     public final double probability;
     // 2a, 1b
     public Word(Symbol[] symbols, double probability) {
-        this(new SymbolSet(symbols), probability);
+        this(new MapBasedSymbolSet(symbols), probability);
     }
     public Word(SymbolSet symbols, double probability) {
         this.symbols = symbols;

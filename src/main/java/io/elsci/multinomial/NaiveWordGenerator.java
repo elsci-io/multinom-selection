@@ -23,7 +23,7 @@ public class NaiveWordGenerator implements WordGenerator {
         Map<SymbolSet, Double> combinationProb = new HashMap<>();
         List<List<Integer>> words = Lists.cartesianProduct(symbolChoices);
         for (List<Integer> wordSymbolIndices : words) {
-            SymbolSet symbols = new SymbolSet();
+            SymbolSet symbols = new MapBasedSymbolSet();
             double wordProb = 1;
             for (int i = 0; i < wordSymbolIndices.size(); i++) {
                 Alphabet a = as.get(i);
