@@ -16,6 +16,24 @@ public class Word {
         this.probability = probability;
     }
 
+    /**
+     * Concatenates {@link SymbolSet}s (see {@link SymbolSet#concat(SymbolSet...)} for details) and calculates
+     * overall word probability.
+     *
+     * @param words to concatenate into a single word
+     * @return a word that combines all the specified words and the probability of the overall combination
+     */
+    public static Word concat(Word ... words) {
+        SymbolSet[] sets = new SymbolSet[words.length];
+        double overallProbability = 1;
+        for (int i = 0; i < words.length; i++) {
+            Word word = words[i];
+            sets[i] = word.symbols;
+            overallProbability *= word.probability;
+        }
+        return new Word(SymbolSet.concat(sets), overallProbability);
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

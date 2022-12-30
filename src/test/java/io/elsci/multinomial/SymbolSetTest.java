@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Map;
 
+import static io.elsci.multinomial.RandomFactory.alphabet;
 import static org.junit.Assert.assertEquals;
 
 public class SymbolSetTest {
@@ -14,7 +15,7 @@ public class SymbolSetTest {
     }
     @Test
     public void concatenatingSingleSet_producesSameSymbolSet() {
-        Alphabet a = new Alphabet("a", .5, .3);
+        Alphabet a = alphabet("a", 2);
         SymbolSet mapBased = new MapBasedSymbolSet(Map.of(a.getSymbol(0), 1));
         assertEquals(mapBased, SymbolSet.concat(mapBased));
 
@@ -23,15 +24,15 @@ public class SymbolSetTest {
     }
     @Test
     public void concatenatingEmptySymbolSetDoesNothingToResult() {
-        Alphabet a = new Alphabet("a", .5, .3);
+        Alphabet a = alphabet("a", 2);
         SymbolSet set = new MapBasedSymbolSet(Map.of(a.getSymbol(0), 1));
         assertEquals(set, SymbolSet.concat(new MapBasedSymbolSet(), set, new ArrayBasedSymbolSet(a, new int[]{0, 0})));
     }
     @Test
     public void canConcatSymbolSetsOfDifferentClasses() {
-        Alphabet a = new Alphabet("a", .5, .3, .1, .1);
-        Alphabet b = new Alphabet("b", .5, .3, .1, .1);
-        Alphabet c = new Alphabet("c", .5, .3, .1, .1);
+        Alphabet a = alphabet("a", 3);
+        Alphabet b = alphabet("b", 3);
+        Alphabet c = alphabet("c", 4);
         Map<Symbol, Integer> frequency = Map.of(
                 a.getSymbol(1), 2,
                 b.getSymbol(2), 2,
