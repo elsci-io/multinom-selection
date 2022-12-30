@@ -1,5 +1,6 @@
 package io.elsci.multinomial;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +25,11 @@ public class MapBasedSymbolSet implements SymbolSet {
             if (num > 0)
                 this.frequency.put(new Symbol(a, i), num);
         }
+    }
+
+    @Override
+    public Map<Symbol, Integer> getSymbolFrequencies() {
+        return Collections.unmodifiableMap(frequency);
     }
 
     @Override public void increment(Symbol s) {

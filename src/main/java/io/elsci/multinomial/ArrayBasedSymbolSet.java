@@ -1,6 +1,8 @@
 package io.elsci.multinomial;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 class ArrayBasedSymbolSet implements SymbolSet {
@@ -17,6 +19,17 @@ class ArrayBasedSymbolSet implements SymbolSet {
     }
     public int getWordLength() {
         return MathUtils.sum(symbolFrequencies);
+    }
+
+    @Override
+    public Map<Symbol, Integer> getSymbolFrequencies() {
+        Map<Symbol, Integer> result = new HashMap<>();
+        for (int i = 0, symbolFrequenciesLength = symbolFrequencies.length; i < symbolFrequenciesLength; i++) {
+            if (symbolFrequencies[i] != 0) {
+                result.put(alphabet.getSymbol(i), symbolFrequencies[i]);
+            }
+        }
+        return result;
     }
 
     @Override public boolean equals(Object o) {
