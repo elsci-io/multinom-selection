@@ -43,4 +43,7 @@ class ArrayBasedSymbolSet implements SymbolSet {
         result = 31 * result + Arrays.hashCode(symbolFrequencies);
         return result;
     }
+    public String toString() {
+        return new MapBasedSymbolSet(getSymbolFrequencies()).toString();
+    }
 }

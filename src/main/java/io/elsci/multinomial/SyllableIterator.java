@@ -38,6 +38,9 @@ class SyllableIterator implements Iterator<Word> {
         }
         return head;
     }
+    public Word peekAtNext() {
+        return queue.peek();
+    }
 
     private Word createMostProbableSyllable() {
         int[] symbolFreq = new int[alphabet.probabilities.length];
