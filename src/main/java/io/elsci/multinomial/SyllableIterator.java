@@ -61,6 +61,14 @@ class SyllableIterator implements Iterator<Word> {
                 sum += symbolFreq[i];
             }
         }
+        // After all our trials above it's still possible that we didn't spread all the syllable length
+        // across all the symbols of alphabet. E.g. if alphabet contains symbols with probabilities .85, .09, .06,
+        // and we requested 5 symbols, then the logic above would generate a syllable of length 5: [4, 0, 0].
+        // This is a critical problem as the length must always equal the requested value. So in these rare cases
+        // we simply add what's missing to some random element (well, we choose the 1st one). After that
+        // we still run the logic that navigates and finds more probable syllables - that will correct our
+        // "hasty" choice anyway.
+        symbolFreq[0] += (this.syllableLength - sum);
         return navigateToTheTop(symbolFreq);
     }
 
