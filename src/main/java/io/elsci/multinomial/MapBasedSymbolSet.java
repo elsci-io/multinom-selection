@@ -53,6 +53,6 @@ public class MapBasedSymbolSet implements SymbolSet {
         return Objects.hash(frequency);
     }
     @Override public String toString() {
-        return frequency.toString();
+        return "MapBased" + frequency;
     }
 }

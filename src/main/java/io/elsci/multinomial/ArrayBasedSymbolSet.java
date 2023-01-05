@@ -44,6 +44,6 @@ class ArrayBasedSymbolSet implements SymbolSet {
         return result;
     }
     public String toString() {
-        return new MapBasedSymbolSet(getSymbolFrequencies()).toString();
+        return "ArrayBased"+getSymbolFrequencies();
     }
 }
