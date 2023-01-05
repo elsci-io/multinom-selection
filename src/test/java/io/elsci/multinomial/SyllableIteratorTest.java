@@ -55,17 +55,25 @@ public class SyllableIteratorTest {
     }
 
     @Test
-    public void createsMostProbableSyllableWithOneSymbolWhenAlphabetContainsProbabilitiesSmallerThan0point5() {
+    public void createsMostProbableSyllableWithFirstSymbolOfAlphabetHavingProbabilityLessThanHalf_wordLength1() {
         Alphabet a = new Alphabet("a", 0.3, 0.3, 0.25, 0.1, 0.05);
         SyllableIterator it = new SyllableIterator(a, 1);
         assertWordsEqual(new Word(new Symbol[]{a.getSymbol(0)}, .3), it.createMostProbableSyllable());
     }
 
     @Test
-    public void createsMostProbableSyllableWithSomeSymbolsWhenAlphabetContainsProbabilitiesSmallerThan0point5() {
+    public void createsMostProbableSyllableWithFirstSymbolOfAlphabetHavingProbabilityLessThanHalf_wordLength5() {
         Alphabet a = new Alphabet("a", 0.3, 0.3, 0.25, 0.1, 0.05);
         SyllableIterator it = new SyllableIterator(a, 5);
         assertWordsEqual(new Word(a.getSymbols(0,0,1,1,2), .06075), it.createMostProbableSyllable());
+    }
+    @Test
+    public void createsMostProbableSyllableWithLastSymbolOfAlphabetHavingProbabilityLessThanHalf() {
+        // .85*5 = 4.45 is rounded to 4 symbols
+        // .09*5 = 0.45 is rounded to 0 in case of a bug (which we had)
+        Alphabet a = new Alphabet("a", .85, .09, .06);
+        SyllableIterator it = new SyllableIterator(a, 5);
+        assertWordsEqual(new Word(a.getSymbols(0,0,0,0,0), .4437053), it.createMostProbableSyllable());
     }
 
     @Test
