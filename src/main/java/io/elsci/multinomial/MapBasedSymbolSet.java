@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class MapBasedSymbolSet implements SymbolSet {
+class MapBasedSymbolSet implements SymbolSet {
     private final Map<Symbol, Integer/*num of letters for each symbol*/> frequency = new HashMap<>();
 
     MapBasedSymbolSet() {}

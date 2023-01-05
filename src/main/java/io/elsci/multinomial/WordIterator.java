@@ -2,7 +2,7 @@ package io.elsci.multinomial;
 
 import java.util.*;
 
-public class WordIterator implements Iterator<Word> {
+class WordIterator implements Iterator<Word> {
     private final Queue<WordAndSyllables> queue = new PriorityQueue<>();
     private final List<LazyList<Word>> alphabetSyllables;
     private final Set<IntArray> alreadySeen = new HashSet<>();

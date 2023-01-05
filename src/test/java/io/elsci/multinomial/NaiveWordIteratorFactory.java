@@ -5,9 +5,9 @@ import com.google.common.collect.Lists;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class NaiveWordGenerator implements WordGenerator {
+class NaiveWordIteratorFactory {
 
-    public Iterator<Word> generate(WordSpec spec) {
+    public static Iterator<Word> createNaiveIterator(WordSpec spec) {
         List<List<Integer>> symbolChoices = new ArrayList<>();
         List<Alphabet> as = new ArrayList<>();
         for (Entry<Alphabet, Integer> specEntry : spec.numberOfSymbols.entrySet()) {

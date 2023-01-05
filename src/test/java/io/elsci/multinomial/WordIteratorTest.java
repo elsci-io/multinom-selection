@@ -1,14 +1,12 @@
 package io.elsci.multinomial;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static io.elsci.multinomial.AssertUtils.assertWordsEqual;
-import static io.elsci.multinomial.WordIterator.childrenOf;
+import static io.qala.datagen.RandomShortApi.integer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -33,9 +31,7 @@ public class WordIteratorTest {
     @Test
     public void wordCreatedOutOf2SymbolsOf1Alphabet_hasProbability1() {
         Alphabet a = new Alphabet("A", 1);
-        NaiveWordGenerator generator = new NaiveWordGenerator();
-
-        Iterator<Word> it = generator.generate(new WordSpec(map(a, 2)));
+        Iterator<Word> it = NaiveWordIteratorFactory.createNaiveIterator(new WordSpec(map(a, 2)));
         Word next = it.next();
         Word expected = new Word(a.getSymbols(0, 0), 1);
         assertWordsEqual(expected, next);
@@ -87,6 +83,24 @@ public class WordIteratorTest {
         assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(1)}, .05), it.next());
         assertFalse(it.hasNext());
     }
+    @Test
+    public void alphabets3x2_generate9words_length2() {
+        Alphabet a0 = new Alphabet("a", .5, .49, .01);
+        Alphabet a1 = new Alphabet("A", .4, .39, .21);
+
+        Iterator<Word> it = generate(map(a0, 1, a1, 1));
+
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(0)}, .5 *.4), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(0)}, .49*.4), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(1)}, .5 *.39), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(1)}, .49*.39), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(2)}, .5 *.21), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(2)}, .49*.21), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(2), a1.getSymbol(0)}, .01*.4), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(2), a1.getSymbol(1)}, .01*.39), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(2), a1.getSymbol(2)}, .01*.21), it.next());
+        assertFalse(it.hasNext());
+    }
 
     @Test
     public void wordsAreSortedByProbability_desc() {
@@ -109,26 +123,39 @@ public class WordIteratorTest {
         assertWordsEqual(new Word(new MapBasedSymbolSet(map(a.getSymbol(0), 2, a.getSymbol(1), 8)),  0.3019899), it.next());
     }
 
-    @Test public void childrenOf_listsAllWordsDifferingIn1Syllable() {
-        Alphabet a1 = new Alphabet("a", .6, .4);
-        Alphabet a2 = new Alphabet("b", .7, .3);
-        SyllableIterator[] iterators = new SyllableIterator[] {
-                new SyllableIterator(a1, 1),
-                new SyllableIterator(a2, 1)
-        };
-        Word[] syllables = new Word[] {iterators[0].next(), iterators[1].next()};
-//        List<Word[]> children = childrenOf(syllables, iterators);
-//        assertEquals(2, children.size());
-//        assertEquals(
-//                new Word(new MapBasedSymbolSet(Map.of(a1.getSymbol(1), 1, a2.getSymbol(0), 1)), .4*.7),
-//                Word.concat(children.get(0)));
-//        assertEquals(
-//                new Word(new MapBasedSymbolSet(Map.of(a1.getSymbol(0), 1, a2.getSymbol(1), 1)), .6*.3),
-//                Word.concat(children.get(1)));
+    @Test @Ignore// this is supposed to be run manually only as it's too slow
+    public void generatesSameMostProbableWordAsNaiveWordGenerator() {
+        Alphabet[] alphabets = RandomFactory.alphabets(integer(1, 6), integer(1, 5));
+        Map<Alphabet, Integer> wordSpec = new HashMap<>();
+        for (Alphabet alphabet : alphabets)
+            wordSpec.put(alphabet, integer(1, 5));
+        Iterator<Word> naiveIterator = NaiveWordIteratorFactory.createNaiveIterator(new WordSpec(wordSpec));
+        Iterator<Word> quickIterator = generate(wordSpec);
+
+        assertWordsEqual(naiveIterator.next(), quickIterator.next());
+    }
+
+    @Test @Ignore// this is supposed to be run manually only as it's too slow
+    public void generatesSameResultsAsNaiveWordGenerator() {
+        Alphabet[] alphabets = RandomFactory.alphabets(integer(1, 6), integer(1, 5));
+        Map<Alphabet, Integer> wordSpec = new HashMap<>();
+        for (Alphabet alphabet : alphabets)
+            wordSpec.put(alphabet, integer(1, 5));
+        Iterator<Word> naiveIterator = NaiveWordIteratorFactory.createNaiveIterator(new WordSpec(wordSpec));
+        Iterator<Word> quickIterator = generate(wordSpec);
+        List<Word> naiveWords = new ArrayList<>();
+        while(naiveIterator.hasNext()) {
+            Word naiveWord = naiveIterator.next();
+            naiveWords.add(naiveWord);
+            Word quickWord = quickIterator.next();
+            assertWordsEqual(naiveWord, quickWord);
+        }
+        assertFalse(quickIterator.hasNext());
+        System.out.println("Number of isotopes: " + naiveWords.size());
     }
 
     private static Iterator<Word> generate(Map<Alphabet, Integer> wordSpec) {
-        return new WordIterator(new WordSpec(wordSpec));
+        return WordIteratorFactory.create(new WordSpec(wordSpec));
     }
 
     private static <K, V> Map<K, V> map(K k, V v) {

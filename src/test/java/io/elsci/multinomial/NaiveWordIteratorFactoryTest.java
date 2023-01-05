@@ -9,7 +9,7 @@ import java.util.Map;
 import static io.elsci.multinomial.AssertUtils.assertWordsEqual;
 import static org.junit.Assert.*;
 
-public class NaiveWordGeneratorTest {
+public class NaiveWordIteratorFactoryTest {
     @Test
     public void thereIsOnlyOneEmptyWord_andItsProbabilityIs1() {
         Alphabet a = new Alphabet("A", 1);
@@ -30,9 +30,8 @@ public class NaiveWordGeneratorTest {
     @Test
     public void wordCreatedOutOf2SymbolsOf1Alphabet_hasProbability1() {
         Alphabet a = new Alphabet("A", 1);
-        NaiveWordGenerator generator = new NaiveWordGenerator();
 
-        Iterator<Word> it = generator.generate(new WordSpec(map(a, 2)));
+        Iterator<Word> it = NaiveWordIteratorFactory.createNaiveIterator(new WordSpec(map(a, 2)));
         Word next = it.next();
         Word expected = new Word(a.getSymbols(0, 0), 1);
         assertWordsEqual(expected, next);
@@ -109,7 +108,7 @@ public class NaiveWordGeneratorTest {
 
 
     private static Iterator<Word> generate(Map<Alphabet, Integer> wordSpec) {
-        return new NaiveWordGenerator().generate(new WordSpec(wordSpec));
+        return NaiveWordIteratorFactory.createNaiveIterator(new WordSpec(wordSpec));
     }
 
     private static <K, V> Map<K, V> map(K k, V v) {

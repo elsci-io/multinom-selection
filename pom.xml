@@ -10,6 +10,14 @@
 
     <dependencies>
         <dependency>
+            <!-- We need Gamma functions to calculate multinomial distributions, unfortunately we're not experts in
+              this topic at the moment - so we're forced to use this lib. But in the future releases we have to
+              implement our own function so that there are no external dependencies from our lib.-->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
@@ -19,11 +27,7 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.1-jre</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.qala.datagen</groupId>
