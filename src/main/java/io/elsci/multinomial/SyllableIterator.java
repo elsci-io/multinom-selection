@@ -26,12 +26,12 @@ class SyllableIterator implements Iterator<Word> {
     @Override
     public Word next() {
         Word head = queue.poll();
-        if(head == null)
+        if (head == null)
             throw new NoSuchElementException("Reached the end");
         int[][] children = childrenOf(toFrequencyArray(head));
         for (int[] symbolFreq : children) {
             SymbolFrequencies freq = new SymbolFrequencies(symbolFreq);
-            if(alreadySeen.contains(freq))
+            if (alreadySeen.contains(freq))
                 continue;
             alreadySeen.add(freq);
             queue.add(createSyllable(symbolFreq));
@@ -42,13 +42,55 @@ class SyllableIterator implements Iterator<Word> {
         return queue.peek();
     }
 
-    private Word createMostProbableSyllable() {
+    Word createMostProbableSyllable() {
+        // First we make our best guess of what should be the most probable syllable, but it's only a guess.
+        // After that we'll have to do navigation and explicitly check the probabilities of the neighbours
+        // (aka children) - maybe they'll turn out to be more probable.
         int[] symbolFreq = new int[alphabet.probabilities.length];
-        for (int i = 0; i < alphabet.probabilities.length; i++)
-            // TODO: will this always round correctly?
-            symbolFreq[i] = (int) Math.round(alphabet.probabilities[i] * this.syllableLength);
-        return createSyllable(symbolFreq);
+        int sum = 0;
+        // It's possible that the most probable symbol has probability less than 0.5, so after rounding we'll
+        // end up with 0 elements of such symbol. So we have to "normalize" all the probabilities in such scenario
+        // to make sure we choose >0 of them.
+        double k = 1;
+        double d = alphabet.probabilities[0] * this.syllableLength;
+        if (d < 0.5)
+            k = 0.5 / d;
+        for (int i = 0; i < alphabet.probabilities.length; i++) {
+            if (sum < this.syllableLength) {
+                symbolFreq[i] = (int) Math.round(alphabet.probabilities[i] * this.syllableLength * k);
+                sum += symbolFreq[i];
+            }
+        }
+        return navigateToTheTop(symbolFreq);
     }
+
+    /**
+     * Starts with the specified symbol frequencies and steps into the direction (children) with higher probabilities
+     * until it reaches the top (the word with max probability). We have to do this because there's no good way
+     * to find the most probable element accurately in all cases - we can only start with our best guess, and
+     * then call this method to get to the top quickly.
+     *
+     * @param bestGuessForMostProbable symbol frequencies of the current guess for the most probable word
+     * @return a word with highest probability
+     */
+    private Word navigateToTheTop(int[] bestGuessForMostProbable) {
+        Word currentWord = createSyllable(bestGuessForMostProbable);
+        int[] currentFrequencies = bestGuessForMostProbable;
+        boolean keepSearching = true;
+        while (keepSearching) {
+            keepSearching = false;
+            for (int[] child : childrenOf(currentFrequencies)) {
+                Word word = createSyllable(child);
+                if (currentWord.probability < word.probability) {
+                    currentWord = word;
+                    currentFrequencies = child;
+                    keepSearching = true;
+                }
+            }
+        }
+        return currentWord;
+    }
+
     private Word createSyllable(int[] symbolFreq) {
         double syllableProb = multinomMassFunction(symbolFreq, alphabet.probabilities);
         return new Word(new ArrayBasedSymbolSet(alphabet, symbolFreq), syllableProb);
