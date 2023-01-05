@@ -8,13 +8,13 @@ class SyllableIterator implements Iterator<Word> {
     private final PriorityQueue<Word> queue = new PriorityQueue<>(Word.BY_PROBABILITY_DESC);
     private final Alphabet alphabet;
     private final int syllableLength;
-    private final Set<SymbolFrequencies> alreadySeen = new HashSet<>();
+    private final Set<IntArray> alreadySeen = new HashSet<>();
 
     public SyllableIterator(Alphabet alphabet, int syllableLength) {
         this.alphabet = alphabet;
         this.syllableLength = syllableLength;
         Word mostProbable = createMostProbableSyllable();
-        alreadySeen.add(new SymbolFrequencies(toFrequencyArray(mostProbable)));
+        alreadySeen.add(new IntArray(toFrequencyArray(mostProbable)));
         queue.add(mostProbable);
     }
 
@@ -30,16 +30,13 @@ class SyllableIterator implements Iterator<Word> {
             throw new NoSuchElementException("Reached the end");
         int[][] children = childrenOf(toFrequencyArray(head));
         for (int[] symbolFreq : children) {
-            SymbolFrequencies freq = new SymbolFrequencies(symbolFreq);
+            IntArray freq = new IntArray(symbolFreq);
             if (alreadySeen.contains(freq))
                 continue;
             alreadySeen.add(freq);
             queue.add(createSyllable(symbolFreq));
         }
         return head;
-    }
-    public Word peekAtNext() {
-        return queue.peek();
     }
 
     Word createMostProbableSyllable() {
