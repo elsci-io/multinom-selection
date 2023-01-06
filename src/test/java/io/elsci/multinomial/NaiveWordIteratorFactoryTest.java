@@ -73,14 +73,14 @@ public class NaiveWordIteratorFactoryTest {
     @Test
     public void alphabets2x2_generate4words_length2() {
         Alphabet a0 = new Alphabet("a", .75, .25);
-        Alphabet a1 = new Alphabet("A", .2, .8);
+        Alphabet a1 = new Alphabet("A", .8, .2);
 
         Iterator<Word> it = generate(map(a0, 1, a1, 1));
 
-        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(1)}, .6), it.next());
-        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(1)}, .2), it.next());
-        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(0)}, .15), it.next());
-        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(0)}, .05), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(0)}, .6), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(0)}, .2), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(0), a1.getSymbol(1)}, .15), it.next());
+        assertWordsEqual(new Word(new Symbol[]{a0.getSymbol(1), a1.getSymbol(1)}, .05), it.next());
         assertFalse(it.hasNext());
     }
 
@@ -99,10 +99,10 @@ public class NaiveWordIteratorFactoryTest {
 
     @Test
     public void findTheMostPopularWordIn1Alphabet() {
-        Alphabet a = new Alphabet("a", .2, .8);
+        Alphabet a = new Alphabet("a", .8, .2);
         Iterator<Word> it = generate(map(a, 10));
 
-        assertWordsEqual(new Word(new MapBasedSymbolSet(map(a.getSymbol(0), 2, a.getSymbol(1), 8)),  0.3019899), it.next());
+        assertWordsEqual(new Word(new MapBasedSymbolSet(map(a.getSymbol(1), 2, a.getSymbol(0), 8)),  0.3019899), it.next());
 
     }
 

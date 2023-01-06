@@ -67,10 +67,10 @@ public class QuickSyllableGeneratorTest {
     }
     @Test
     public void findTheMostPopular10letterWord() {
-        Alphabet a = new Alphabet("a", .2, .3, .5);
+        Alphabet a = new Alphabet("a",  .5, .3, .2);
         Iterator<Word> it = generate(a, 6);
 
-        Word expected = new Word(new MapBasedSymbolSet(map(a.getSymbol(0), 1, a.getSymbol(1), 2, a.getSymbol(2), 3)), 0.135);
+        Word expected = new Word(new MapBasedSymbolSet(map(a.getSymbol(2), 1, a.getSymbol(1), 2, a.getSymbol(0), 3)), 0.135);
         assertWordsEqual(expected, it.next());
     }
 

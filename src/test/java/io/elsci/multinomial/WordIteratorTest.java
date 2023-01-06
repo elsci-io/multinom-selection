@@ -117,10 +117,10 @@ public class WordIteratorTest {
 
     @Test
     public void findTheMostPopularWordIn1Alphabet() {
-        Alphabet a = new Alphabet("a", .2, .8);
+        Alphabet a = new Alphabet("a", .8, .2);
         Iterator<Word> it = generate(map(a, 10));
 
-        assertWordsEqual(new Word(new MapBasedSymbolSet(map(a.getSymbol(0), 2, a.getSymbol(1), 8)),  0.3019899), it.next());
+        assertWordsEqual(new Word(new MapBasedSymbolSet(map(a.getSymbol(1), 2, a.getSymbol(0), 8)),  0.3019899), it.next());
     }
 
     @Test @Ignore// this is supposed to be run manually only as it's too slow
