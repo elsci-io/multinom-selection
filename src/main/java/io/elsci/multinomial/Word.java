@@ -12,6 +12,8 @@ public class Word {
         this(new MapBasedSymbolSet(symbols), probability);
     }
     public Word(SymbolSet symbols, double probability) {
+        if(Double.isInfinite(probability) || Double.isNaN(probability) || probability < 0 || probability > 1)
+            throw new InvalidProbabilityException("Invalid probability: " + probability);
         this.symbols = symbols;
         this.probability = probability;
     }

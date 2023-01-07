@@ -10,14 +10,6 @@
 
     <dependencies>
         <dependency>
-            <!-- We need Gamma functions to calculate multinomial distributions, unfortunately we're not experts in
-              this topic at the moment - so we're forced to use this lib. But in the future releases we have to
-              implement our own function so that there are no external dependencies from our lib.-->
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
@@ -34,6 +26,28 @@
             <artifactId>qala-datagen</artifactId>
             <version>2.5.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openscience.cdk</groupId>
+            <artifactId>cdk-formula</artifactId>
+            <version>2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openscience.cdk</groupId>
+            <artifactId>cdk-data</artifactId>
+            <version>2.8</version>
         </dependency>
 
     </dependencies>

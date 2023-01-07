@@ -2,7 +2,7 @@ package io.elsci.multinomial;
 
 import java.util.*;
 
-import static io.elsci.multinomial.MathUtils.multinomMassFunction;
+import static io.elsci.multinomial.MathUtils.combinationProbability;
 
 class SyllableIterator implements Iterator<Word> {
     private final PriorityQueue<Word> queue = new PriorityQueue<>(Word.BY_PROBABILITY_DESC);
@@ -97,7 +97,7 @@ class SyllableIterator implements Iterator<Word> {
     }
 
     private Word createSyllable(int[] symbolFreq) {
-        double syllableProb = multinomMassFunction(symbolFreq, alphabet.probabilities);
+        double syllableProb = combinationProbability(symbolFreq, alphabet.probabilities);
         return new Word(new ArrayBasedSymbolSet(alphabet, symbolFreq), syllableProb);
     }
     private static int[] toFrequencyArray(Word mostProbable) {

@@ -19,7 +19,7 @@ public class SyllableIteratorTest {
 
         Word expected = new Word(new MapBasedSymbolSet(Map.of(a.getSymbol(0), 7, a.getSymbol(1), 3)), .2668279319999999);
         Word actual = Word.concat(it.next()); // need concat to turn ArrayBasedSymbolSet to MapBasedSymbolSet
-        assertEquals(expected, actual);
+        assertWordsEqual(expected, actual);
     }
 
     @Test
@@ -27,14 +27,14 @@ public class SyllableIteratorTest {
         Alphabet a = new Alphabet("a", .7, .3);
         SyllableIterator it = new SyllableIterator(a, 1);
         Word expected = new Word(new ArrayBasedSymbolSet(a, new int[]{1, 0}), .7);
-        assertEquals(expected, it.next());
+        assertWordsEqual(expected, it.next());
     }
     @Test
     public void mostProbableSyllableCanContainSymbols_withProbabilityLessThan05() {
         Alphabet a = new Alphabet("a", .4, .3, .3);
         SyllableIterator it = new SyllableIterator(a, 1);
         Word expected = new Word(new ArrayBasedSymbolSet(a, new int[]{1, 0, 0}), .4);
-        assertEquals(expected, it.next());
+        assertWordsEqual(expected, it.next());
     }
 
     @Test
