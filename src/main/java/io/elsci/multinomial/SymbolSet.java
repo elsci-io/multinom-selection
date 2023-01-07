@@ -3,6 +3,10 @@ package io.elsci.multinomial;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A combination of {@link Symbol}s of different {@link Alphabet}. Represents the result of the calculations, but
+ * doesn't have the probability inside it - for that look at {@link Word}.
+ */
 public interface SymbolSet {
     void increment(Symbol s);
     int getWordLength();

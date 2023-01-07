@@ -3,14 +3,19 @@ package io.elsci.multinomial;
 import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * A particular combination of symbols with a calculated probability. This is the <i>result</i> of all
+ * our computations.
+ */
 public class Word {
     static Comparator<Word> BY_PROBABILITY_DESC = Comparator.<Word>comparingDouble((w) -> w.probability).reversed();
     public final SymbolSet symbols;
     public final double probability;
-    // 2a, 1b
+
     public Word(Symbol[] symbols, double probability) {
         this(new MapBasedSymbolSet(symbols), probability);
     }
+
     public Word(SymbolSet symbols, double probability) {
         if(Double.isInfinite(probability) || Double.isNaN(probability) || probability < 0 || probability > 1)
             throw new InvalidProbabilityException("Invalid probability: " + probability);

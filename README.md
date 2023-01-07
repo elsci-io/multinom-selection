@@ -1,3 +1,35 @@
+# Multinomial selection in Java
+
+Suppose you're picking 100 random balls from a bag. The probabilities of picking Red, Blue, Green are 0.95, 0.03, 0.02. What's the most probable combination? What are _k_ most probable combinations? This is a problem of Multinomial Selection and it shows up in different contexts. E.g. in Mass Spectrometry, given a Molecular Formula $C_{20}H_{28}Cl_4N_2O_4$, we need to know the most probable isotope combination.
+
+This library is a generic implementation that doesn't depend on a particular application. The application-specific libraries can wrap this one. Here's how to iterate over all possible combinations starting with the most probable:
+
+```java
+// Alphabets represent an Element (a single Bag of balls) - they
+// have Symbols (Red, Blue, Green balls) with different probabilities.
+//
+// In Chemistry terminology an Alphabet is an Element, while Symbol
+// is a particular isotope (well, its probability): 
+Alphabet c = new Alphabet("C", .99, .1);
+Alphabet cl = new Alphabet("Cl", .75, .25);
+// Once we have our "Bags", we want to tell how many Symbols (Balls)
+// of each Alphabet (Bag) we want to pull:  
+Map<Alphabet, Integer> wordSpec = new HashMap<>();
+wordSpec.put(c, 15);
+wordSpec.put(cl, 5);
+// We have all the data, it's time to iterate over all possibilities,
+// starting with the most probable:
+Iterator<Word> it = WordIteratorFactory.create(new WordSpec(wordSpec));
+while(it.hasNext()) {
+    Word next = it.next();
+    System.out.println(next.probability + ": " + next.symbols);
+}
+```
+
+The implementation resembles (a little) the one described in [Fast Exact Computation of the k Most Abundant Isotope Peaks with Layer-Ordered Heaps](https://pubs.acs.org/doi/10.1021/acs.analchem.0c01670#). Most likely we're somewhat slower.
+
+The algorithm scales roughly at $O(k \times log(a \times s))$ (to be calculated precisely), where $k$ is number of words we select, $a$ is the number of Alphabets and $s$ is the number of Symbols in each Alphabet.
+
 # Multinomial selection and Isotope Distribution
 
 When doing Mass Spectrometry, after a spectrum is captured, we need to determine which of the masses within that spectrum belong to our compound. A compound consists of atoms, each of them may represent isotopes with different masses. Outside of chemistry this problem mostly boils down to **selecting most probable events out of a multinomial**. 
@@ -27,50 +59,3 @@ where
 * $A$ and $B$ is the number of repeats of these elements (2 and 1 in our example).
 
 Try it for $H_2O$ and you'll see that the probabilities will turn out just right as they are multiplied, while the $\alpha_n$ powers will be added - which represents the sum of masses of isotopes in a molecule.
-
-# Inputs & Outputs
-
-## Alphabets
-
-To remove chemistry specifics from this problem and make it more generic, we can abstract away from chemistry and just say that each Element (e.g. $O$) is an alphabet of isotopes. Which means that if we have a formula like $H_2O$ we need 2 alphabets. Though in practice we'll fill all possible isotopes for all elements during some set up step.
-
-There are couple of ways we can set up the alphabets:
-
-```java
-Alphabets alphabets = new Alphabets(new double[][]{
-    {.99762, .002}, // Oxygen isotopes and their probabilities
-    {.99985, .00015} // Hydrogen isotopes and their probabilities
-    // when building alphabets for chemistry we want to specify all elements 
-    // from the periodic table and all the isotopes we're interested in 
-});
-```
-Or this way, with an additional `Alphabet` class:
-
-```java
-Alphabets alphabets = new Alphabets(
-    new Alphabet(.99762, .002), 
-    new Alphabet(.99985, .00015)
-);
-```
-
-## Words
-
-Now we want to generate words out of the alphabets. But first we need to describe a specification that tells us which alphabets (elements) we should use in the word and how many letters of each alphabet there will be:
-
-```java
-WordSpec spec = new WordSpec(Map.of(
-         // Reference the alphabet and the number of elements that we want to sample from that alphabet
-         0, 2, // H2   
-         1, 1  // O
-));
-Iterator<Word> words = new WordGenerator(alphabets).generate(spec);
-```
-
-## Isotopologues
-
-Chemistry and isotopologues is just one of the applications. For each such application we will create a wrapper that would call the core logic, but it will expose domain-specific classes and methods. And we can also use application-specific libs (like CDK for chemistry) to set up the Alphabets at the beginning. So the client code of such wrapper would look like this:  
-
-```java
-Mf mf = new Mf("H2O");
-Iterator<Isotopologue> isotopologues = new IsotopologueGenerator(isotopesAbandances).generate(mf);
-```

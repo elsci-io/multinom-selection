@@ -157,6 +157,27 @@ public class WordIteratorTest {
     private static Iterator<Word> generate(Map<Alphabet, Integer> wordSpec) {
         return WordIteratorFactory.create(new WordSpec(wordSpec));
     }
+    public static void main(String[] args) {
+        // Alphabets represent an Element (a single Bag of balls) - they
+        // have Symbols (Red, Blue, Green balls) with different probabilities.
+        //
+        // In Chemistry terminology an Alphabet is an Element, while Symbol
+        // is a particular isotope (well, its probability):
+        Alphabet c = new Alphabet("C", .99, .1);
+        Alphabet cl = new Alphabet("Cl", .75, .25);
+        // Once we have our "Bags", we want to tell how many Symbols (Balls)
+        // of each Alphabet (Bag) we want to pull:
+        Map<Alphabet, Integer> wordSpec = new HashMap<>();
+        wordSpec.put(c, 15);
+        wordSpec.put(cl, 5);
+        // We have all the data, it's time to iterate over all possibilities,
+        // starting with the most probable:
+        Iterator<Word> it = WordIteratorFactory.create(new WordSpec(wordSpec));
+        while(it.hasNext()) {
+            Word next = it.next();
+            System.out.println(next);
+        }
+    }
 
     private static <K, V> Map<K, V> map(K k, V v) {
         LinkedHashMap<K, V> map = new LinkedHashMap<>();
