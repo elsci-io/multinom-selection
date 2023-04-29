@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * A particular combination of symbols with a calculated probability. This is the <i>result</i> of all
+ * A particular combination of symbols (letters) with a calculated probability. This is the <i>result</i> of all
  * our computations.
  */
 public class Word {

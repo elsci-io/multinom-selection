@@ -2,6 +2,10 @@ package io.elsci.multinomial;
 
 import java.util.*;
 
+/**
+ * Iterates over all possible combinations of words. The words come sorted by probability in descending
+ * order.
+ */
 class WordIterator implements Iterator<Word> {
     private final Queue<WordAndSyllables> queue = new PriorityQueue<>();
     private final List<LazyList<Word>> alphabetSyllables;

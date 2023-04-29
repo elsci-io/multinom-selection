@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A combination of {@link Symbol}s of different {@link Alphabet}. Represents the result of the calculations, but
+ * A combination of {@link Symbol}s of different {@link Alphabet}s. Represents the result of the calculations, but
  * doesn't have the probability inside it - for that look at {@link Word}.
  */
 public interface SymbolSet {
     void increment(Symbol s);
     int getWordLength();
+    /**
+     * @return shows how many of each Symbol with not zero probability there are in the Alphabet
+     */
     Map<Symbol, Integer> getSymbolFrequencies();
 
     /**
@@ -21,7 +24,6 @@ public interface SymbolSet {
     static SymbolSet concat(SymbolSet... sets) {
         Map<Symbol, Integer> map = new HashMap<>();
         for (SymbolSet symbolSet : sets)
-            //
             map.putAll(symbolSet.getSymbolFrequencies());
         return new MapBasedSymbolSet(map);
     }

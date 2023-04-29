@@ -13,7 +13,7 @@ This library is a generic implementation that doesn't depend on a particular app
 Alphabet c = new Alphabet("C", .99, .1);
 Alphabet cl = new Alphabet("Cl", .75, .25);
 // Once we have our "Bags", we want to tell how many Symbols (Balls)
-// of each Alphabet (Bag) we want to pull:  
+// of each Alphabet (Bag) we want to pull (which the map represents):  
 Map<Alphabet, Integer> wordSpec = new HashMap<>();
 wordSpec.put(c, 15);
 wordSpec.put(cl, 5);

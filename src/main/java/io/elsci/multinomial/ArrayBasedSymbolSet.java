@@ -7,6 +7,7 @@ import java.util.Objects;
 
 class ArrayBasedSymbolSet implements SymbolSet {
     final Alphabet alphabet;
+    /** Shows how many of each Symbol there are in the Alphabet. */
     final int[] symbolFrequencies;
 
     ArrayBasedSymbolSet(Alphabet alphabet, int[] symbolFrequencies) {

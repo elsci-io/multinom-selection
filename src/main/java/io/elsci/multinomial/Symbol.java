@@ -2,6 +2,10 @@ package io.elsci.multinomial;
 
 import java.util.Objects;
 
+/**
+ * A letter in an Alphabet and therefore its probability with which it occurs (e.g. in chemistry terms a
+ * Symbol is a particular isotope of an element).
+ */
 public class Symbol {
     public final Alphabet alphabet;
     public final int letterIndex;

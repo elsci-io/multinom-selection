@@ -2,10 +2,18 @@ package io.elsci.multinomial;
 
 import java.util.Arrays;
 
+/**
+ * Represents probabilities of its letters (symbols) with which they occur (e.g. in chemistry terms an Alphabet is
+ * an element which contains probabilities of isotopes). The actual elements are represented by indices from 0 to N.
+ */
 public class Alphabet {
     final String name;
     final double[] probabilities;
 
+    /**
+     * @param probabilities an Alphabet must contain at least one symbol (one probability); must be between 0 and 1;
+     *                      must be sorted in descending order; the sum of all probabilities must be 1
+     */
     public Alphabet(String name, double... probabilities) {
         this.name = name;
         if (probabilities.length == 0)
@@ -30,10 +38,16 @@ public class Alphabet {
         this.probabilities = probabilities;
     }
 
+    /**
+     * @return a particular Symbol (letter) from this Alphabet
+     */
     public Symbol getSymbol(int letterIdx) {
         return new Symbol(this, letterIdx);
     }
 
+    /**
+     * @return particular Symbols (letters) from this Alphabet
+     */
     public Symbol[] getSymbols(int... letterIndices) {
         Symbol[] result = new Symbol[letterIndices.length];
         for (int i = 0; i < letterIndices.length; i++)

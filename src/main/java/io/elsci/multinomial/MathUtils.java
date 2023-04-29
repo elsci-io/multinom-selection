@@ -5,7 +5,7 @@ class MathUtils {
 
     /**
      * Uses <a href="https://en.wikipedia.org/wiki/Multinomial_distribution">Gamma functions</a>. It's modified
-     * to use some of the calculations in log scale.
+     * to use some calculations in log scale.
      */
     public static double combinationProbability(int[] combinations, double[] probabilities) {
         double prob = 1;

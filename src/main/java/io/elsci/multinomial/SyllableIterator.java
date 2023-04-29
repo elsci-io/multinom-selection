@@ -4,12 +4,19 @@ import java.util.*;
 
 import static io.elsci.multinomial.MathUtils.combinationProbability;
 
+/**
+ * "Syllable" is a group of symbols from the same {@link Alphabet}. It iterates over all syllable in descending order.
+ * As opposed to {@link WordIterator} that can iterate across different alphabets.
+ */
 class SyllableIterator implements Iterator<Word> {
     private final PriorityQueue<Word> queue = new PriorityQueue<>(Word.BY_PROBABILITY_DESC);
     private final Alphabet alphabet;
     private final int syllableLength;
     private final Set<IntArray> alreadySeen = new HashSet<>();
 
+    /**
+     * @param syllableLength how many symbols of the given Alphabet are in a syllable (e.g. aaa syllable has 3 symbols)
+     */
     public SyllableIterator(Alphabet alphabet, int syllableLength) {
         this.alphabet = alphabet;
         this.syllableLength = syllableLength;
