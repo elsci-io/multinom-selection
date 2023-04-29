@@ -6,7 +6,7 @@
 
     <groupId>io.elsci.multinomial-selection</groupId>
     <artifactId>multinomial-selection</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>Elsci Multinomial Selection</name>
     <description>Selecting most probable combinations of elements each of which has its own probability.</description>
     <url>https://github.com/elsci-io/multinomial-selection</url>
@@ -38,9 +38,9 @@
     </developers>
 
     <scm>
-        <connection>git@github.com:elsci-io/multinom-selection.git</connection>
-        <developerConnection>git@github.com:elsci-io/multinom-selection.git</developerConnection>
-        <url>https://github.com/elsci-io/multinom-selection</url>
+        <connection>git@github.com:elsci-io/multinomial-selection.git</connection>
+        <developerConnection>git@github.com:elsci-io/multinomial-selection.git</developerConnection>
+        <url>https://github.com/elsci-io/multinomial-selection</url>
     </scm>
 
     <dependencies>
