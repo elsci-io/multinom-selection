@@ -1,5 +1,7 @@
 # Multinomial selection in Java
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.elsci.multinomial-selection/multinomial-selection/badge.svg)](https://central.sonatype.com/artifact/io.elsci.multinomial-selection/multinomial-selection/)
+
 Suppose you're picking 100 random balls from a bag. The probabilities of picking Red, Blue, Green are 0.95, 0.03, 0.02. What's the most probable combination? What are _k_ most probable combinations? This is a problem of Multinomial Selection and it shows up in different contexts. E.g. in Mass Spectrometry, given a Molecular Formula $C_{20}H_{28}Cl_4N_2O_4$, we need to know the most probable isotope combination.
 
 This library is a generic implementation that doesn't depend on a particular application. The application-specific libraries can wrap this one. Here's how to iterate over all possible combinations starting with the most probable:
@@ -29,6 +31,16 @@ while(it.hasNext()) {
 The implementation resembles (a little) the one described in [Fast Exact Computation of the k Most Abundant Isotope Peaks with Layer-Ordered Heaps](https://pubs.acs.org/doi/10.1021/acs.analchem.0c01670#). Most likely we're somewhat slower.
 
 The algorithm scales roughly at $O(k \times log(a \times s))$ (to be calculated precisely), where $k$ is number of words we select, $a$ is the number of Alphabets and $s$ is the number of Symbols in each Alphabet.
+
+# Maven coordinates (latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.elsci.multinomial-selection/multinomial-selection/badge.svg)](https://central.sonatype.com/artifact/io.elsci.multinomial-selection/multinomial-selection/))
+
+```xml
+<dependency>
+    <groupId>io.elsci.multinomial-selection</groupId>
+    <artifactId>multinomial-selection</artifactId>
+    <version>LATEST VERSION</version>
+</dependency>
+```
 
 # Multinomial selection and Isotope Distribution
 
