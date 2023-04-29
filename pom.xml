@@ -6,7 +6,7 @@
 
     <groupId>io.elsci.multinomial-selection</groupId>
     <artifactId>multinomial-selection</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Elsci Multinomial Selection</name>
     <description>Selecting most probable combinations of elements each of which has its own probability.</description>
     <url>https://github.com/elsci-io/multinom-selection</url>
