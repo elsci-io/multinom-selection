@@ -1,4 +1,4 @@
-package io.elsci.multinomial;
+package io.elsci.multinomialselection;
 
 import static org.junit.Assert.*;
 

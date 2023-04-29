@@ -1,8 +1,8 @@
-package io.elsci.multinomial;
+package io.elsci.multinomialselection;
 
 import java.util.*;
 
-import static io.elsci.multinomial.MathUtils.combinationProbability;
+import static io.elsci.multinomialselection.MathUtils.combinationProbability;
 
 /**
  * "Syllable" is a group of symbols from the same {@link Alphabet}. It iterates over all syllable in descending order.

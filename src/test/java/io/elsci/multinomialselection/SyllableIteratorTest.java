@@ -1,8 +1,8 @@
-package io.elsci.multinomial;
+package io.elsci.multinomialselection;
 
 import org.junit.Test;
 
-import static io.elsci.multinomial.AssertUtils.assertWordsEqual;
+import static io.elsci.multinomialselection.AssertUtils.assertWordsEqual;
 import java.util.Map;
 
 import static org.junit.Assert.*;

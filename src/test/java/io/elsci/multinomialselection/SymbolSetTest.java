@@ -1,10 +1,10 @@
-package io.elsci.multinomial;
+package io.elsci.multinomialselection;
 
 import org.junit.Test;
 
 import java.util.Map;
 
-import static io.elsci.multinomial.RandomFactory.alphabet;
+import static io.elsci.multinomialselection.RandomFactory.alphabet;
 import static org.junit.Assert.assertEquals;
 
 public class SymbolSetTest {

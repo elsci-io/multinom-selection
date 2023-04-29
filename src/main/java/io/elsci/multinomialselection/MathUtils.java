@@ -1,4 +1,4 @@
-package io.elsci.multinomial;
+package io.elsci.multinomialselection;
 
 class MathUtils {
     private static final double SQRT_2PI = Math.sqrt(2 * Math.PI);

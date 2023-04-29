@@ -1,11 +1,11 @@
-package io.elsci.multinomial;
+package io.elsci.multinomialselection;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
 
-import static io.elsci.multinomial.AssertUtils.assertWordsEqual;
+import static io.elsci.multinomialselection.AssertUtils.assertWordsEqual;
 import static io.qala.datagen.RandomShortApi.integer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
