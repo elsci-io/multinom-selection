@@ -1,10 +1,10 @@
-# Multinomial selection in Java
+# Multinomial selection in Java [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.elsci.multinomial-selection/multinomial-selection/badge.svg)](https://central.sonatype.com/artifact/io.elsci.multinomial-selection/multinomial-selection/)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.elsci.multinomial-selection/multinomial-selection/badge.svg)](https://central.sonatype.com/artifact/io.elsci.multinomial-selection/multinomial-selection/)
+Suppose you're picking 100 random balls from a bag. The probabilities of picking Red, Blue, Green are 0.95, 0.03, 0.02. What's the most probable combination? What are _k_ most probable combinations? What if we had to pull from yet another bag of cubes of different colors - then what are possible combinations of balls and cubes that we can pull? This is a problem of Multinomial Selection and it shows up in different contexts. E.g. in Mass Spectrometry, given a Molecular Formula $C_{20}H_{28}Cl_4N_2O_4$, we need to know the most probable isotope combination.
 
-Suppose you're picking 100 random balls from a bag. The probabilities of picking Red, Blue, Green are 0.95, 0.03, 0.02. What's the most probable combination? What are _k_ most probable combinations? This is a problem of Multinomial Selection and it shows up in different contexts. E.g. in Mass Spectrometry, given a Molecular Formula $C_{20}H_{28}Cl_4N_2O_4$, we need to know the most probable isotope combination.
+## How to use
 
-This library is a generic implementation that doesn't depend on a particular application. The application-specific libraries can wrap this one. Here's how to iterate over all possible combinations starting with the most probable:
+This library is a generic implementation that doesn't depend on a particular application. The application-specific libraries can wrap this one (like [isotope-distribution](https://github.com/elsci-io/isotope-distribution)). Here's how to iterate over all possible combinations starting with the most probable:
 
 ```java
 // Alphabets represent an Element (a single Bag of balls) - they
@@ -32,7 +32,9 @@ The implementation resembles (a little) the one described in [Fast Exact Computa
 
 The algorithm scales roughly at $O(k \times log(a \times s))$ (to be calculated precisely), where $k$ is number of words we select, $a$ is the number of Alphabets and $s$ is the number of Symbols in each Alphabet.
 
-# Maven coordinates (latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.elsci.multinomial-selection/multinomial-selection/badge.svg)](https://central.sonatype.com/artifact/io.elsci.multinomial-selection/multinomial-selection/))
+## Maven coordinates
+
+Use Maven to download the library (latest version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.elsci.multinomial-selection/multinomial-selection/badge.svg)](https://central.sonatype.com/artifact/io.elsci.multinomial-selection/multinomial-selection/)):
 
 ```xml
 <dependency>
@@ -42,32 +44,14 @@ The algorithm scales roughly at $O(k \times log(a \times s))$ (to be calculated 
 </dependency>
 ```
 
-# Multinomial selection and Isotope Distribution
-
-When doing Mass Spectrometry, after a spectrum is captured, we need to determine which of the masses within that spectrum belong to our compound. A compound consists of atoms, each of them may represent isotopes with different masses. Outside of chemistry this problem mostly boils down to **selecting most probable events out of a multinomial**. 
-
-For instance $H_2O$ consists of 2 elements: $H$ and $O$. Each of them has a number of isotopes (e.g. $^1H$, $^2H$, $^{16}O$, $^{18}O$, etc), so eventually we end up with a lot of possible combinations:
-
-| Isotopologue   | Molecular Mass                            | Probability                                        | Mass Spec Intensity |
-|----------------|-------------------------------------------|----------------------------------------------------|---------------------|
-| $^1H^1H^{16}O$ | $1.007825 + 1.007825 + 16.99913=19.01478$ | $.99985^2 \times .99762=.9973207$                  | 1                   |
-| $^1H^1H^{18}O$ | $1.007825 + 1.007825 + 17.99916=20.01481$ | $.99985^2 \times .002=.002$                        | 0.002005373         |
-| $^2H^1H^{16}O$ | $2.014102 + 1.007825 + 16.99913=20.02106$ | $2\times .00015 \times .99985 \times .99762=.0003$ | 0.0003008059        |
-| ...            | ...                                       | ...                                                | ...                 |
-
-We don't really want to go over all the combinations as most of them are too rare. In the example above only the primary isotopologue is interesting, the rest can be ignored. But in larger molecules we may be interested in a couple of dozens of isotopologues. And we need a way to list the ones that we'll be interested in. The naive approach will result in a quadratic algorithm which is too slow for large molecules.
-
 ## Multinonmial math
 
 In mathematical terms all possible combinations and their probabilities can be generated using a multinomial:
 
 $$
-\text{Distribution of isotopologues}=(a_{1}^{\alpha_1}+a_{2}^{\alpha_2}+...+a_{n}^{\alpha_n})^A + (b_{1}^{\beta_1}+b_{2}^{\beta_2}+...+b_{n}^{\beta_n})^B
+\text{Distribution of probabilities}=(a_{1}+a_{2}+...+a_{n})^A (b_{1}+b_{2}+...+b_{n})^B
 $$
 
 where
-* $a1$, $a2$ are probabilities of 1st and 2nd isotope of first element (basically $p(^1H)$, $p(^2H)$ in our example at the top) and $b_1$, $b_2$ are isotopes of 2nd element (it's $p(^{16}O)$ and $p(^{18}O)$ probabilities).
-* $\alpha_1$, $\alpha_2$ are molecular mass of that isotope
-* $A$ and $B$ is the number of repeats of these elements (2 and 1 in our example).
-
-Try it for $H_2O$ and you'll see that the probabilities will turn out just right as they are multiplied, while the $\alpha_n$ powers will be added - which represents the sum of masses of isotopes in a molecule.
+* $a1$, $a2$ are probabilities of 1st and 2nd elements of the first set (say.. probability of blue and red ball) and $b_1$, $b_2$ are probabilities of the elements of the 2nd set (say.. probabilities of blue and red cubes)
+* $A$ and $B$ is the number of repeats of these elements (taking 2 balls and 3 cubes).
