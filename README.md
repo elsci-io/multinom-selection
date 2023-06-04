@@ -30,7 +30,11 @@ while(it.hasNext()) {
 
 The implementation resembles (a little) the one described in [Fast Exact Computation of the k Most Abundant Isotope Peaks with Layer-Ordered Heaps](https://pubs.acs.org/doi/10.1021/acs.analchem.0c01670#). Most likely we're somewhat slower.
 
-The algorithm scales roughly at $O(k \times log(a \times s))$ (to be calculated precisely), where $k$ is number of words we select, $a$ is the number of Alphabets and $s$ is the number of Symbols in each Alphabet.
+The algorithm scales at $O(k^2 \times a^2 \times s^2 \times (log(k \times s) + s))$ , where $k$ is number of words we select, $a$ is the number of alphabets and $s$ is the number of symbols in an alphabet.  
+k: $O(k^2 \times log(k))$  
+a: $O(a^2)$  
+s: $O(s^3)$  
+We assume that f in method childrenOf() in SyllableIterator is constant for small k, in other case the algorithm becomes more difficult.
 
 ## Maven coordinates
 
